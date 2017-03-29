@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class AngularElectronPage {
+export class ElectrosnapPage {
   navigateTo() {
     return browser.get('/');
   }

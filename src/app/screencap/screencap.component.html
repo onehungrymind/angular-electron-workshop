@@ -1,0 +1,5 @@
+<button md-raised-button (click)="captureScreen()">Capture Screen</button>
+<img [src]="screencap" *ngIf="screencap" alt="screencapture">
+<video [src]="videoSrc" (onloadedmetadata)="onLoadedMetadata()" #video></video>
+<canvas #canvas></canvas>
+<span *ngIf="loading">Loading...</span>
