@@ -1,10 +1,10 @@
-import { AngularElectronPage } from './app.po';
+import { ElectrosnapPage } from './app.po';
 
-describe('angular-electron App', function() {
-  let page: AngularElectronPage;
+describe('electrosnap App', () => {
+  let page: ElectrosnapPage;
 
   beforeEach(() => {
-    page = new AngularElectronPage();
+    page = new ElectrosnapPage();
   });
 
   it('should display message saying app works', () => {

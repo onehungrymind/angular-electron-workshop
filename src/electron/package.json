@@ -1,5 +1,6 @@
 {
-  "name"    : "angular-electron",
-  "version" : "0.1.0",
-  "main"    : "electron.js"
+  "name": "electrosnap",
+  "version": "0.0.0",
+  "license": "MIT",
+  "main": "main.js"
 }
