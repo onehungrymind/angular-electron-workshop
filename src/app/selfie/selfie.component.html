@@ -1,9 +1,16 @@
-<video autoplay [srcObject]="cameraStream" #camera></video>
-<button md-raised-button (click)="takePicture()">Take Picture</button>
-<button md-raised-button (click)="clearPicture()" *ngIf="photo">Clear Picture</button>
-<button md-raised-button (click)="copyPicture()" *ngIf="photo">Copy Picture</button>
-<md-icon *ngIf="imageCopied">check</md-icon>
-<canvas #canvas *ngIf="!photo"></canvas>
-<div class="output" *ngIf="photo">
-  <img [src]="photo" alt="Your selfie">
+<div id="video-area">
+  <video autoplay [srcObject]="cameraStream" #camera></video>
+</div>
+
+<div id="image-control">
+  <button md-raised-button (click)="takePicture()">Take Picture</button>
+  <button md-raised-button (click)="clearPicture()" *ngIf="photo">Clear Picture</button>
+  <button md-raised-button (click)="copyPicture()" *ngIf="photo">Copy Picture</button>
+</div>
+
+<div id="captured-image">
+  <canvas #canvas *ngIf="!photo"></canvas>
+  <div class="output" *ngIf="photo">
+    <img [src]="photo" alt="Your selfie">
+  </div>
 </div>

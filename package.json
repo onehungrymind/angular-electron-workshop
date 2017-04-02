@@ -29,6 +29,8 @@
     "@types/electron": "^1.4.34",
     "core-js": "^2.4.1",
     "electron": "^1.6.2",
+    "electron-screencapture": "^1.1.0",
+    "hammerjs": "^2.0.8",
     "npm-run-all": "^4.0.2",
     "rxjs": "^5.1.0",
     "zone.js": "^0.8.4"

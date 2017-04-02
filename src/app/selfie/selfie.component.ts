@@ -11,7 +11,6 @@ export class SelfieComponent implements OnInit {
 
   cameraStream;
   photo: string;
-  imageCopied = false;
   @ViewChild('canvas') canvas;
   @ViewChild('camera') camera;
 
@@ -22,29 +21,27 @@ export class SelfieComponent implements OnInit {
       this.cameraStream = stream;
     }).catch(err => {
       console.log(err);
-    });
+    });    
   }
 
   takePicture() {
     let context = this.canvas.nativeElement.getContext('2d');
-    this.canvas.width = 250;
-    this.canvas.height = 250;
-    context.drawImage(this.camera.nativeElement, 0, 0, 250, 250);
-
+    context.drawImage(this.camera.nativeElement, 0, 0, 300, 200);
     this.photo = this.canvas.nativeElement.toDataURL('image/png');
     this.canvas.nativeElement.style = 'hidden';
   }
 
   clearPicture() {
     this.photo = null;
-    this.imageCopied = false;
   }
 
   copyPicture() {
     const { clipboard, nativeImage } = electron;
+    const { dialog, app } = electron.remote;
     let image = nativeImage.createFromDataURL(this.photo);
     clipboard.writeImage(image, 'jpg');
-    this.imageCopied = true;
+    let icon = `${app.getAppPath()}/assets/thumbsup.png`;
+    dialog.showMessageBox({ message: 'Picture Copied!', detail: 'Your picture has been copied!', icon });
   }
 
 }

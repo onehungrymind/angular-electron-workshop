@@ -8,6 +8,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { SelfieComponent } from './selfie/selfie.component';
 import { ScreencapComponent } from './screencap/screencap.component';
+import { ScreencapService } from './screencap/screencap.service';
+
+import 'hammerjs';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,7 @@ import { ScreencapComponent } from './screencap/screencap.component';
     MaterialModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [ScreencapService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
