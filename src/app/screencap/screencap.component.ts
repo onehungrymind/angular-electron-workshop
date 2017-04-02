@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ipcRenderer, desktopCapturer } from 'electron';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { ScreencapService } from './screencap.service';
 
 declare var electron: any;
 
@@ -13,66 +14,37 @@ export class ScreencapComponent implements OnInit {
 
   @ViewChild('video') video;
   @ViewChild('canvas') canvas;
-
-  screencap: string;
-  videoSrc: any;
-  stream: any;
+  videoSrc: SafeUrl;
+  stream: MediaStream;
+  capturedImage: string;
   loading = false;
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private screencap: ScreencapService) { }
 
-  ngOnInit() {}
-
-  captureScreen() {
-    const { desktopCapturer } = electron;
-    this.loading = true;
-    desktopCapturer.getSources(
-      { types: ['window', 'screen'] },
-      (error, sources) => {
-        if (error) throw error;
-        sources.forEach(source => {
-          if (source.name === (<any>window).document.title) {
-            (<any>window).navigator.webkitGetUserMedia(
-              {
-                audio: false,
-                video: {
-                  mandatory: {
-                    chromeMediaSource: 'desktop',
-                    chromeMediaSourceId: source.id,
-                    minWidth: 1280,
-                    maxWidth: 4000,
-                    minHeight: 720,
-                    maxHeight: 4000
-                  }
-                }
-              },
-              stream => {
-                const videoUrl = URL.createObjectURL(stream);
-                this.videoSrc = this.sanitizer.bypassSecurityTrustUrl(videoUrl);
-                this.loading = false;
-                // try {
-                //   stream.getTracks()[0].stop();
-                // } catch (err) {
-                //   console.log(err);
-                // }
-              },
-              error => {
-                console.log(error);
-              }
-            );
-            return;
-          }
-        });
-      }
-    );
+  ngOnInit() {
   }
 
-  onLoadedMetadata() {
-    let context = this.canvas.nativeElement.getContext('2d');
-    // Draw video on canvas
-    context.drawImage(this.video.nativeElement, 0, 0);
-    this.screencap = this.canvas.nativeElement.toDataURL('image/png');
-    this.video.nativeElement.remove();
+  captureScreen() {
+    this.loading = true;
+    this.screencap
+      .getStream()
+      .flatMap((stream: MediaStream) => this.screencap.getVideo(stream))
+      .subscribe(
+        (data: any) => {
+          this.videoSrc = data.videoUrl;
+          let video = this.video.nativeElement.style;
+          video.height = '720px';
+          video.width = '1280px';
+          this.video.nativeElement.onloadedmetadata = () => {
+            const context = this.canvas.nativeElement.getContext('2d');
+            context.drawImage(this.video.nativeElement, 0, 0, 1280, 720);
+            this.capturedImage = this.canvas.nativeElement.toDataURL('image/png');
+            this.loading = false;
+            data.stream.getTracks()[0].stop();
+          }
+        },
+        (error: any) => console.log(error)
+      );
   }
 
 }

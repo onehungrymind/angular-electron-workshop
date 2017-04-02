@@ -1,5 +1,5 @@
 const electron = require('electron')
-const { Menu, Tray } = require('electron')
+const { Menu, Tray, globalShortcut, ipcMain } = require('electron')
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
@@ -61,13 +61,24 @@ app.on('activate', function () {
 // code. You can also put them in separate files and require them here.
 let tray = null;
 app.on('ready', () => {
-  let iconPath = path.join(__dirname, 'camera.png')
+  let iconPath = path.join(__dirname, 'assets/camera.png')
   tray = new Tray(iconPath)
   const contextMenu = Menu.buildFromTemplate([
-    {label: 'Quit ElectroSnap', click() {
+    { label: 'Quit ElectroSnap', click() {
       app.quit()
     }}
   ])
   tray.setToolTip('ElectroSnap')
   tray.setContextMenu(contextMenu)
 })
+
+// app.on('ready', () => {
+//   globalShortcut.register('CommandOrControl+Y', () => {
+//     // ipcMain.on('copy-shortcut', (event, sender) => {
+//     //   BrowserWindow.getAllWindows().foreach(window => {
+//     //     window.webContents.send('copy-shortcut-engaged');
+//     //   })
+//     // })
+//   })
+// })
+

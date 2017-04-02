@@ -1,0 +1,9 @@
+#video-area, #image-control, #captured-image {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+#image-control {
+  margin-right: 10px;
+}
