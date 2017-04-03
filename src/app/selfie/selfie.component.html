@@ -6,6 +6,7 @@
   <button md-raised-button (click)="takePicture()">Take Picture</button>
   <button md-raised-button (click)="clearPicture()" *ngIf="photo">Clear Picture</button>
   <button md-raised-button (click)="copyPicture()" *ngIf="photo">Copy Picture</button>
+  <button md-raised-button (click)="savePicture()" *ngIf="photo">Save Picture</button>
 </div>
 
 <div id="captured-image">
