@@ -34,7 +34,7 @@ export class ScreencapComponent implements OnInit {
           this.videoSrc = data.videoUrl;
           this.video.nativeElement.onloadedmetadata = () => {
             const context = this.canvas.nativeElement.getContext('2d');
-            context.drawImage(this.video.nativeElement, 0, 0, 1280, 720);
+            context.drawImage(this.video.nativeElement, 0, 0, 250, 250);
             this.capturedImage = this.canvas.nativeElement.toDataURL('image/png');
             this.loading = false;
             data.stream.getTracks()[0].stop();

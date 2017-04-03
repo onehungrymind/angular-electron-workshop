@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { WEBTASK_URL } from './../app.constants';
 
 declare var electron: any;
 
@@ -31,12 +32,6 @@ export class SelfieComponent implements OnInit {
       }
     });
 
-    navigator.mediaDevices.getUserMedia({video: true}).then(stream => {
-      this.cameraStream = stream;
-    }).catch(err => {
-      console.log(err);
-    });
-
     const menu = new Menu();
     const self = this;
     menu.append(new MenuItem({
@@ -50,6 +45,22 @@ export class SelfieComponent implements OnInit {
       event.preventDefault();
       menu.popup(remote.getCurrentWindow());
     });
+
+    this.startCamera();
+  }
+
+  startCamera() {
+    navigator.mediaDevices.getUserMedia({video: true})
+      .then(stream => {
+        this.cameraStream = stream;
+      }).catch(err => {
+        console.log(err);
+      });
+  }
+
+  stopCamera() {
+    this.cameraStream = null;
+    console.log(this.cameraStream)
   }
 
   takePicture() {
@@ -77,6 +88,17 @@ export class SelfieComponent implements OnInit {
     const { ipcRenderer, nativeImage } = electron;
     let image = this.createNativeImage(this.photo);
     ipcRenderer.send('save-file', image.toJPEG(50));
+  }
+
+  uploadToDropbox() {
+    let image = this.createNativeImage(this.photo);
+    this.http.post(WEBTASK_URL, { 
+      imageName: 'myImage', image: image.toJPEG(50) 
+    }).map(res => res.json())
+      .subscribe( 
+        data => console.log(data),
+        error => console.log(error)
+      );
   }
 
   private createNativeImage(image) {
