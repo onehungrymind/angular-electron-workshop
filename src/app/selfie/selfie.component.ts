@@ -20,7 +20,8 @@ export class SelfieComponent implements OnInit {
   constructor(public el: ElementRef, public http: Http) {}
 
   ngOnInit() {
-    const { ipcRenderer } = electron;
+    const { ipcRenderer, remote } = electron;
+    const { Menu, MenuItem } = remote;
 
     ipcRenderer.on('copy-image', (event, arg) => {
       console.log(event);
@@ -34,7 +35,21 @@ export class SelfieComponent implements OnInit {
       this.cameraStream = stream;
     }).catch(err => {
       console.log(err);
-    });    
+    });
+
+    const menu = new Menu();
+    const self = this;
+    menu.append(new MenuItem({
+      label: 'Copy Picture',
+      click() {
+        self.copyPicture()
+      }
+    }));
+
+    window.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
+      menu.popup(remote.getCurrentWindow());
+    });
   }
 
   takePicture() {
@@ -51,6 +66,7 @@ export class SelfieComponent implements OnInit {
   copyPicture() {
     const { clipboard } = electron;
     const { dialog, app } = electron.remote;
+    if (!this.photo) return;
     let image = this.createNativeImage(this.photo);
     clipboard.writeImage(image, 'jpg');
     let icon = `${app.getAppPath()}/assets/thumbsup.png`;
