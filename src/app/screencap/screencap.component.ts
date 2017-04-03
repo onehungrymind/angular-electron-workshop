@@ -14,7 +14,7 @@ export class ScreencapComponent implements OnInit {
 
   @ViewChild('video') video;
   @ViewChild('canvas') canvas;
-  videoSrc: SafeUrl;
+  videoSrc: SafeUrl = '';
   stream: MediaStream;
   capturedImage: string;
   loading = false;
@@ -32,9 +32,6 @@ export class ScreencapComponent implements OnInit {
       .subscribe(
         (data: any) => {
           this.videoSrc = data.videoUrl;
-          let video = this.video.nativeElement.style;
-          video.height = '720px';
-          video.width = '1280px';
           this.video.nativeElement.onloadedmetadata = () => {
             const context = this.canvas.nativeElement.getContext('2d');
             context.drawImage(this.video.nativeElement, 0, 0, 1280, 720);
