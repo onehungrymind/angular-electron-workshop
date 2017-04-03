@@ -1,5 +1,5 @@
 const electron = require('electron')
-const { Menu, Tray, globalShortcut, ipcMain } = require('electron')
+const { Menu, Tray, globalShortcut, ipcMain, dialog } = require('electron')
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
@@ -7,6 +7,7 @@ const BrowserWindow = electron.BrowserWindow
 
 const path = require('path')
 const url = require('url')
+const fs = require('fs')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -72,13 +73,22 @@ app.on('ready', () => {
   tray.setContextMenu(contextMenu)
 })
 
-// app.on('ready', () => {
-//   globalShortcut.register('CommandOrControl+Y', () => {
-//     // ipcMain.on('copy-shortcut', (event, sender) => {
-//     //   BrowserWindow.getAllWindows().foreach(window => {
-//     //     window.webContents.send('copy-shortcut-engaged');
-//     //   })
-//     // })
-//   })
-// })
+app.on('ready', () => {
+  globalShortcut.register('CommandOrControl+Y', () => {
+    mainWindow.webContents.send('copy-image', 'copy-image')
+  })
+
+  ipcMain.on('save-file', (event, image) => {
+    dialog.showSaveDialog({title: 'Save the Image'}, (filename) => {
+      try {
+        fs.writeFile(`${filename}.jpg`, new Buffer(image), err => {
+          if (err) throw err;
+          console.log('Image saved!')
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    })
+  })
+})
 
