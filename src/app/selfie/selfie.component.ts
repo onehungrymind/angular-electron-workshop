@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { WEBTASK_URL } from './../app.constants';
@@ -18,7 +18,7 @@ export class SelfieComponent implements OnInit {
   @ViewChild('camera') camera;
   nativeImage;
 
-  constructor(public el: ElementRef, public http: Http) {}
+  constructor(public http: Http) {}
 
   ngOnInit() {
     const { ipcRenderer, remote } = electron;
