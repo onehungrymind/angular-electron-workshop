@@ -24,22 +24,16 @@ export class SelfieComponent implements OnInit {
   }
 
   startCamera() {
-    navigator.mediaDevices.getUserMedia({video: true})
-      .then(stream => {
-        this.cameraStream = stream;
-      }).catch(err => {
-        console.log(err);
-      });
+    // use the navigator.mediaDevices to get the user media
+    // and assign the stream to this.cameraStream
   }
 
   takePicture() {
-    let context = this.canvas.nativeElement.getContext('2d');
-    context.drawImage(this.camera.nativeElement, 0, 0, 300, 200);
-    this.photo = this.canvas.nativeElement.toDataURL('image/png');
-    this.canvas.nativeElement.style = 'hidden';
-    let notification = new Notification('Wow!', {
-      body: 'You look great today!'
-    });
+    // Use canvas in the template and get the 2d context
+
+    // draw the image using the video element
+
+    // pop up a notification that the image has been taken
   }
 
   clearPicture() {
@@ -49,11 +43,14 @@ export class SelfieComponent implements OnInit {
   copyPicture() {
     const { clipboard } = electron;
     const { dialog, app } = electron.remote;
-    if (!this.photo) return;
-    let image = this.createNativeImage(this.photo);
-    clipboard.writeImage(image, 'jpg');
-    let icon = `${app.getAppPath()}/assets/thumbsup.png`;
-    dialog.showMessageBox({ message: 'Picture Copied!', detail: 'Your picture has been copied!', icon });
+    
+    // Create a native image and use the clipboard
+    // to write the image as a .jpg
+    
+    // Use the dialog module to show a message saying
+    // the image has been copied
+    // Optional: use a custom icon
+    // (there's a thumbs-up emoji in the assets folder)
   }
 
   private createNativeImage(image) {
