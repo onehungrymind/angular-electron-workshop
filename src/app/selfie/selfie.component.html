@@ -3,7 +3,6 @@
 </div>
 
 <div id="image-control">
-  <button md-raised-button (click)="stopCamera()" *ngIf="cameraStream">Stop Camera</button>
   <button md-raised-button (click)="takePicture()" *ngIf="!photo && cameraStream">Take Picture</button>
   <button md-raised-button (click)="clearPicture()" *ngIf="photo">Clear Picture</button>
   <button md-raised-button (click)="copyPicture()" *ngIf="photo">Copy Picture</button>
