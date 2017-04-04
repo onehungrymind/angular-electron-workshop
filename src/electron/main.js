@@ -57,30 +57,3 @@ app.on('activate', function () {
     createWindow()
   }
 })
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
-let tray = null;
-app.on('ready', () => {
-  // Use the Tray module to put the app in the system tray
-  // Use the iconPath to create the image that should be used in the tray
-  // The tray context menu should have a single control which quits the app
-  let iconPath = path.join(__dirname, 'assets/camera.png')
-  
-})
-
-app.on('ready', () => {
-  // Register a globalShortcut (accelerator) so the user
-  // can use a quick key to copy the image. When the quick key
-  // is selected, send a message to the renderer process
-  
-
-  // use the .on method to listen for a saved file
-  // message from the SelfieComponent and show a save dialog
-  // when the message is received. After a name is given to the
-  // image, write the image file to disk using fs
-
-  ipcMain.on('save-file', (event, image) => {
-    
-  })
-})

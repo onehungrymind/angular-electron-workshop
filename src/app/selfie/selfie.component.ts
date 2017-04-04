@@ -20,14 +20,6 @@ export class SelfieComponent implements OnInit {
   constructor(public http: Http) {}
 
   ngOnInit() {
-    const { ipcRenderer, remote } = electron;
-    const { Menu, MenuItem } = remote;
-
-    // use ipcRenderer to listen for a message
-    // from the main process to indicate an 
-    // accelerator (quick key) has been used.
-    // Copy the picture when the message is received.
-
     this.startCamera();
   }
 
@@ -62,15 +54,6 @@ export class SelfieComponent implements OnInit {
     clipboard.writeImage(image, 'jpg');
     let icon = `${app.getAppPath()}/assets/thumbsup.png`;
     dialog.showMessageBox({ message: 'Picture Copied!', detail: 'Your picture has been copied!', icon });
-  }
-
-  savePicture() {
-    const { ipcRenderer, nativeImage } = electron;
-
-    // Create native image out of the selfie
-    // and send a message to the main process
-    // using ipcRenderer. The message needs to include
-    // the image itself
   }
 
   private createNativeImage(image) {
