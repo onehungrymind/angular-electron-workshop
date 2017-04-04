@@ -94,7 +94,11 @@ export class SelfieComponent implements OnInit {
       imageName: 'myImage', image: image.toJPEG(50) 
     }).map(res => res.json())
       .subscribe( 
-        data => console.log(data),
+        data => {
+          let notification = new Notification('Done!', {
+            body: 'Your picture has been uploaded!'
+          });
+        },
         error => console.log(error)
       );
   }
