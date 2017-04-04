@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { WEBTASK_URL } from './../app.constants';
@@ -18,7 +18,7 @@ export class SelfieComponent implements OnInit {
   @ViewChild('camera') camera;
   nativeImage;
 
-  constructor(public el: ElementRef, public http: Http) {}
+  constructor(public http: Http) {}
 
   ngOnInit() {
     const { ipcRenderer, remote } = electron;
@@ -32,19 +32,10 @@ export class SelfieComponent implements OnInit {
       }
     });
 
-    const menu = new Menu();
-    const self = this;
-    menu.append(new MenuItem({
-      label: 'Copy Picture',
-      click() {
-        self.copyPicture()
-      }
-    }));
-
-    window.addEventListener('contextmenu', (event) => {
-      event.preventDefault();
-      menu.popup(remote.getCurrentWindow());
-    });
+    // Add a context menu to with a control
+    // to copy the picture
+    // Listen for a 'contextmenu' event on the window
+    // and popup the context menu when it is fired
 
     this.startCamera();
   }
@@ -89,18 +80,8 @@ export class SelfieComponent implements OnInit {
   }
 
   uploadToDropbox() {
-    let image = this.createNativeImage(this.photo);
-    this.http.post(WEBTASK_URL, { 
-      imageName: 'myImage', image: image.toJPEG(50) 
-    }).map(res => res.json())
-      .subscribe( 
-        data => {
-          let notification = new Notification('Done!', {
-            body: 'Your picture has been uploaded!'
-          });
-        },
-        error => console.log(error)
-      );
+    // create a NativeImage and POST it to your
+    // Webtask URL
   }
 
   private createNativeImage(image) {
