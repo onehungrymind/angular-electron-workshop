@@ -62,32 +62,25 @@ app.on('activate', function () {
 // code. You can also put them in separate files and require them here.
 let tray = null;
 app.on('ready', () => {
+  // Use the Tray module to put the app in the system tray
+  // Use the iconPath to create the image that should be used in the tray
+  // The tray context menu should have a single control which quits the app
   let iconPath = path.join(__dirname, 'assets/camera.png')
-  tray = new Tray(iconPath)
-  const contextMenu = Menu.buildFromTemplate([
-    { label: 'Quit ElectroSnap', click() {
-      app.quit()
-    }}
-  ])
-  tray.setToolTip('ElectroSnap')
-  tray.setContextMenu(contextMenu)
+  
 })
 
 app.on('ready', () => {
-  globalShortcut.register('CommandOrControl+Y', () => {
-    mainWindow.webContents.send('copy-image', 'copy-image')
-  })
+  // Register a globalShortcut (accelerator) so the user
+  // can use a quick key to copy the image. When the quick key
+  // is selected, send a message to the renderer process
+  
+
+  // use the .on method to listen for a saved file
+  // message from the SelfieComponent and show a save dialog
+  // when the message is received. After a name is given to the
+  // image, write the image file to disk using fs
 
   ipcMain.on('save-file', (event, image) => {
-    dialog.showSaveDialog({title: 'Save the Image'}, (filename) => {
-      try {
-        fs.writeFile(`${filename}.jpg`, new Buffer(image), err => {
-          if (err) throw err;
-          console.log('Image saved!')
-        })
-      } catch (err) {
-        console.log(err)
-      }
-    })
+    
   })
 })

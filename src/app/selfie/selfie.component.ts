@@ -23,13 +23,10 @@ export class SelfieComponent implements OnInit {
     const { ipcRenderer, remote } = electron;
     const { Menu, MenuItem } = remote;
 
-    ipcRenderer.on('copy-image', (event, arg) => {
-      console.log(event);
-      console.log(arg);
-      if (this.photo) {
-        this.copyPicture();
-      }
-    });
+    // use ipcRenderer to listen for a message
+    // from the main process to indicate an 
+    // accelerator (quick key) has been used.
+    // Copy the picture when the message is received.
 
     this.startCamera();
   }
@@ -69,8 +66,11 @@ export class SelfieComponent implements OnInit {
 
   savePicture() {
     const { ipcRenderer, nativeImage } = electron;
-    let image = this.createNativeImage(this.photo);
-    ipcRenderer.send('save-file', image.toJPEG(50));
+
+    // Create native image out of the selfie
+    // and send a message to the main process
+    // using ipcRenderer. The message needs to include
+    // the image itself
   }
 
   private createNativeImage(image) {
