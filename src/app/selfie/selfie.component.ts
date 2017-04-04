@@ -58,12 +58,7 @@ export class SelfieComponent implements OnInit {
       });
   }
 
-  stopCamera() {
-    this.cameraStream = null;
-  }
-
   takePicture() {
-    const { app } = electron.remote;
     let context = this.canvas.nativeElement.getContext('2d');
     context.drawImage(this.camera.nativeElement, 0, 0, 300, 200);
     this.photo = this.canvas.nativeElement.toDataURL('image/png');
